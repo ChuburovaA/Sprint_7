@@ -13,3 +13,20 @@ class TextMessage:
     no_information_to_account = 'Недостаточно данных для создания учетной записи'
     used_login = 'Этот логин уже используется. Попробуйте другой.'
     successful_registration = '{"ok":true}'
+
+class OrderData:
+    order_data = {
+        "firstName": "Екатерина II",
+        "lastName": "Романова",
+        "address": "Санкт-Петербург, Дворцовая набережная 38",
+        "metroStation": 10,
+        "phone": "+7 000 111 22 33",
+        "rentTime": 3,
+        "deliveryDate": "2024-06-28",
+        "comment": "Попрошу-с не опаздывать!",
+        "color": [
+            "BLACK"
+        ]
+    }
+
+    color_list = ['BLACK', 'GREY', 'BLACK, GREY', '']
