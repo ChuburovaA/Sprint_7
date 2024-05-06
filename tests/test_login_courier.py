@@ -25,3 +25,12 @@ class TestLoginCourier:
         response = requests.post(URL.url_login_courier, data=payload)
 
         assert response.status_code == 404 and response.json()['message'] == TextMessage.account_not_found
+
+    @allure.title("Проверка при отсуствии заполненых полей логина или пароля")
+    @pytest.mark.parametrize('item', ['login', 'password'])
+    def test_login_courier_without_login_or_password(self, item, login_and_delete_courier, create_new_courier):
+        payload = create_new_courier
+        payload.pop(item)
+        response = requests.post(URL.url_login_courier, data=payload)
+
+        assert response.status_code == 400 and response.json()['message'] == TextMessage.no_login_information
