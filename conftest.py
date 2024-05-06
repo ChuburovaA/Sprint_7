@@ -24,3 +24,14 @@ def register_new_courier(create_new_courier):
     response = requests.post(URL.url_create_courier, data=payload)
 
     return response
+
+@pytest.fixture
+def login_and_delete_courier(create_new_courier, register_new_courier):
+    login_data = create_new_courier
+    login_data.pop('firstName')
+    response = requests.post(URL.url_login_courier, data=login_data)
+
+    yield response
+
+    id_courier = response.json()['id']
+    requests.delete(f"{URL.url_delete_courier}{id_courier}")
