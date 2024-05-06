@@ -38,3 +38,12 @@ class TestCreateCourier:
         response = requests.post(URL.url_create_courier, data=payload)
 
         assert response.status_code == 400 and response.json()['message'] == TextMessage.no_information_to_account
+
+    @allure.title("Проверка создания курьера с отсутсвующими обязательными полями")
+    @pytest.mark.parametrize('item', ['login', 'password'])
+    def test_create_courier_without_login_or_password(self, create_new_courier, item):
+        payload = create_new_courier
+        payload.pop(item)
+        response = requests.post(URL.url_create_courier, data=payload)
+
+        assert response.status_code == 400 and response.json()['message'] == TextMessage.no_information_to_account
