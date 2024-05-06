@@ -19,3 +19,14 @@ class TestOrder:
         response_body = response.json()
 
         assert response.status_code == 201 and 'track' in response_body.keys()
+
+    @allure.title("Проверка получения списка заказов курьера")
+    def test_order_list_from_courier(self, login_and_delete_courier):
+        login = login_and_delete_courier
+        create_order = requests.post(URL.url_create_order, data=json.dumps(OrderData.order_data))
+        get_order = requests.get(f"{URL.url_get_order}?t={create_order.json()['track']}")
+
+        requests.put(f"{URL.url_accept_order}/{get_order.json()['order']['id']}?courierId={login.json()['id']}")
+        get_order_list = requests.get(f"{URL.url_get_order_list}{login.json()['id']}")
+
+        assert get_order_list.json()['orders'][0]['id'] == get_order.json()['order']['id']
