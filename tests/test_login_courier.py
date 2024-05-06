@@ -15,3 +15,13 @@ class TestLoginCourier:
         response_body = response.json()
 
         assert response.status_code == 200 and 'id' in response_body.keys()
+
+    @allure.title("Проверка введения несуществующего логина курьера")
+    def test_nonexistent_login_courier(self):
+        payload = {
+            'login': Helper.generate_random_string(10),
+            'password': Helper.generate_random_string(10)
+        }
+        response = requests.post(URL.url_login_courier, data=payload)
+
+        assert response.status_code == 404 and response.json()['message'] == TextMessage.account_not_found
