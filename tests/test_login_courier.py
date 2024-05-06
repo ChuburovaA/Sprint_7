@@ -34,3 +34,12 @@ class TestLoginCourier:
         response = requests.post(URL.url_login_courier, data=payload)
 
         assert response.status_code == 400 and response.json()['message'] == TextMessage.no_login_information
+
+    @allure.title("Проверка при введении неверного логина или пароля")
+    @pytest.mark.parametrize('item', ['login', 'password'])
+    def test_login_courier_incorrect_login_or_password(self, item, create_new_courier, login_and_delete_courier):
+        payload = create_new_courier
+        payload[item] = 'lkagty'
+        response = requests.post(URL.url_login_courier, data=payload)
+
+        assert response.status_code == 404 and response.json()['message'] == TextMessage.account_not_found
