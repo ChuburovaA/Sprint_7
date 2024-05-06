@@ -17,3 +17,10 @@ def create_new_courier():
     }
 
     return payload
+
+@pytest.fixture
+def register_new_courier(create_new_courier):
+    payload = create_new_courier
+    response = requests.post(URL.url_create_courier, data=payload)
+
+    return response
