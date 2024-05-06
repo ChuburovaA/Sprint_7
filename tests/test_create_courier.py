@@ -13,3 +13,10 @@ class TestCreateCourier:
         response = register_new_courier
 
         assert response.status_code == 201 and response.text == TextMessage.successful_registration
+
+    @allure.title("Проверка создания курьера уже с существующими данными")
+    def test_create_courier_with_existing_data(self, create_new_courier, login_and_delete_courier):
+        payload = create_new_courier
+        response = requests.post(URL.url_create_courier, data=payload)
+
+        assert response.status_code == 409 and response.json()["message"] == TextMessage.used_login
